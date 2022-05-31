@@ -57,7 +57,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="h-screen w-screen bg-gray-700">
+    <div className="h-screen w-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <Head>
         <title>Directory to ASCII </title>
         <meta name="description" content="Convert directory structure to ASCII" />
