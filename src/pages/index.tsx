@@ -61,12 +61,14 @@ const Home: NextPage = () => {
       <Head>
         <title>Directory to ASCII </title>
         <meta name="description" content="Convert directory structure to ASCII" />
+        <meta property="og:image" content="/preview.jpg" />
         <link rel="icon" href="/directory-tree.ico" />
       </Head>
       <div className="flex flex-col w-full h-full justify-center items-center gap-4">
         <div className="flex h-1/2 w-1/2 shadow-xl text-lg">
           <label className="sr-only" htmlFor="directory">Directory</label>
           <textarea
+          spellCheck={false}
             id="directory"
             className="font-mono flex-1 bg-gray-800 rounded-xl text-white p-8 resize-none relative"
             onChange={onChange}
@@ -74,7 +76,7 @@ const Home: NextPage = () => {
             ref={ref}
             value={value}
           ></textarea>
-          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl overflow-y-auto">{preview}</pre>
+          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl">{preview}</pre>
         </div>
         <div className="w-1/2 bg-gray-800 rounded-xl shadow-xl flex items-center p-1 justify-between">
           <label className="text-white ml-2">
