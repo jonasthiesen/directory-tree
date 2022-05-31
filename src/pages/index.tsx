@@ -65,7 +65,9 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex flex-col w-full h-full justify-center items-center gap-4">
         <div className="flex h-1/2 w-1/2 shadow-xl text-lg">
+          <label className="sr-only" htmlFor="directory">Directory</label>
           <textarea
+            id="directory"
             className="font-mono flex-1 bg-gray-800 rounded-xl text-white p-8 resize-none relative"
             onChange={onChange}
             style={{ tabSize }}
@@ -88,6 +90,7 @@ const Home: NextPage = () => {
               onClick={copyToClipboard}
             >
               {copySuccess ? <FaClipboardCheck /> : <FaClipboard />}
+              <span className="sr-only">Copy to clipboard</span>
             </button>
           </Tooltip>
         </div>
