@@ -1,18 +1,26 @@
 import * as React from "react"
 import type { NextPage } from 'next'
-import Head from 'next/head'
+import Head from "next/head"
 import { toAscii } from "../libs/directory"
+import { FaClipboard, FaClipboardCheck } from "react-icons/fa"
+import { Tooltip } from "../components/tooltip"
 
 const Home: NextPage = () => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState("src/\n\tpages/\n\t\tapi/\n\t\t\tindex.ts\n\t\t_app.tsx\n\t\tindex.tsx\n\tutils/\n\t\tstring.test.ts\n\t\tstring.ts\n.eslintrc.json\n.prettierrc\nnext.config.json\npackage.json")
   const [tabSize, setTabSize] = React.useState<number>(2)
+  const [copySuccess, setCopySuccess] = React.useState(false)
 
   const preview = toAscii(value)
 
   React.useEffect(() => {
     const element = ref.current
-    function _action(event: KeyboardEvent) { 
+    if (element != null) {
+      element.focus()
+      element.selectionStart = element.value.length
+    }
+
+    function _action(event: KeyboardEvent) {
       if (event.key === "Tab") {
         event.preventDefault()
         if (element != null) {
@@ -38,40 +46,45 @@ const Home: NextPage = () => {
     setValue(event.currentTarget.value)
   }
 
+  function copyToClipboard() {
+    navigator.clipboard.writeText(preview).then(() => {
+      setCopySuccess(true)
+      setTimeout(() => {
+        setCopySuccess(false)
+      }, 2000)
+    })
+  }
+
   return (
-    <>
+    <div className="h-screen w-screen bg-gray-700">
       <Head>
         <title>Directory to ASCII </title>
         <meta name="description" content="Convert directory structure to ASCII" />
         <link rel="icon" href="/directory-tree.ico" />
       </Head>
-      <div style={{display: "flex"}}>
-        <textarea onChange={onChange} style={{tabSize, fontFamily: "monospace"}} ref={ref} value={value}></textarea>
-        <pre>{preview}</pre>
+      <div className="flex flex-col w-full h-full justify-center items-center gap-4">
+        <div className="flex h-1/2 w-1/2 shadow-xl text-lg">
+          <textarea
+            className="font-mono flex-1 bg-gray-800 rounded-xl text-white p-8 resize-none relative"
+            onChange={onChange}
+            style={{ tabSize }}
+            ref={ref}
+            value={value}
+          ></textarea>
+          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl">{preview}</pre>
+        </div>
+        <div className="w-1/2 bg-gray-800 rounded-xl shadow-xl flex items-center p-1 justify-between">
+          <label className="text-white ml-2">
+            Tab size
+            <input type="number" onChange={event => setTabSize(Number(event.currentTarget.value))} defaultValue={tabSize} className="ml-2 bg-gray-700 p-1 rounded-lg w-16" />
+          </label>
+          <Tooltip label="Copy to clipboard" placement="top">
+            <button className="text-white bg-gray-800 hover:bg-gray-900 p-3 rounded-xl" onClick={copyToClipboard}>{copySuccess ? <FaClipboardCheck /> : <FaClipboard />}</button>
+          </Tooltip>
+        </div>
       </div>
-      <div>
-        <label>
-          Tab size
-          <input type="number" onChange={event => setTabSize(Number(event.currentTarget.value))} defaultValue={tabSize} />
-        </label>
-      </div>
-    </>
+    </div>
   )
 }
 
 export default Home
-
-// src/
-//   libs/
-//     directory.test.ts
-//     directory.ts
-// 	pages/
-//     _app.tsx
-// 		index.tsx
-// .eslintrc.json
-// .prettierrc
-// jest.config.js
-// next.config.js
-// package.json
-// README.md
-// tsconfig.json
