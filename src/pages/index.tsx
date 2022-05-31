@@ -4,6 +4,7 @@ import Head from "next/head"
 import { toAscii } from "../libs/directory"
 import { FaClipboard, FaClipboardCheck } from "react-icons/fa"
 import { Tooltip } from "../components/tooltip"
+import cx from "../libs/cx"
 
 const Home: NextPage = () => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
@@ -79,7 +80,15 @@ const Home: NextPage = () => {
             <input type="number" onChange={event => setTabSize(Number(event.currentTarget.value))} defaultValue={tabSize} className="ml-2 bg-gray-700 p-1 rounded-lg w-16" />
           </label>
           <Tooltip label="Copy to clipboard" placement="top">
-            <button className="text-white bg-gray-800 hover:bg-gray-900 p-3 rounded-xl" onClick={copyToClipboard}>{copySuccess ? <FaClipboardCheck /> : <FaClipboard />}</button>
+            <button
+              className={cx(
+                "text-white bg-gray-800 hover:bg-gray-900 p-3 rounded-xl",
+                [copySuccess, "text-green-500", "text-white"]
+              )}
+              onClick={copyToClipboard}
+            >
+              {copySuccess ? <FaClipboardCheck /> : <FaClipboard />}
+            </button>
           </Tooltip>
         </div>
       </div>
