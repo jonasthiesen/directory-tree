@@ -72,7 +72,7 @@ const Home: NextPage = () => {
             ref={ref}
             value={value}
           ></textarea>
-          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl">{preview}</pre>
+          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl overflow-y-auto">{preview}</pre>
         </div>
         <div className="w-1/2 bg-gray-800 rounded-xl shadow-xl flex items-center p-1 justify-between">
           <label className="text-white ml-2">
