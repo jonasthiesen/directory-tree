@@ -1,18 +1,24 @@
 import * as React from "react"
-import type { NextPage } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import Head from "next/head"
 import { toAscii } from "../libs/directory"
 import { FaClipboard, FaClipboardCheck } from "react-icons/fa"
 import { Tooltip } from "../components/tooltip"
 import cx from "../libs/cx"
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ state }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
-  const [value, setValue] = React.useState("src/\n\tpages/\n\t\tapi/\n\t\t\tindex.ts\n\t\t_app.tsx\n\t\tindex.tsx\n\tutils/\n\t\tstring.test.ts\n\t\tstring.ts\n.eslintrc.json\n.prettierrc\nnext.config.json\npackage.json")
+  const [value, setValue] = React.useState(state ?? "src/\n\tpages/\n\t\tapi/\n\t\t\tindex.ts\n\t\t_app.tsx\n\t\tindex.tsx\n\tutils/\n\t\tstring.test.ts\n\t\tstring.ts\n.eslintrc.json\n.prettierrc\nnext.config.json\npackage.json")
   const [tabSize, setTabSize] = React.useState<number>(2)
   const [copySuccess, setCopySuccess] = React.useState(false)
 
   const preview = toAscii(value)
+
+  React.useEffect(() => {
+      const url = new URL(window.location.toString());
+      url.searchParams.set('state', value);
+      window.history.pushState({}, '', url)
+  }, [value])
 
   React.useEffect(() => {
     const element = ref.current
@@ -41,7 +47,7 @@ const Home: NextPage = () => {
     return () => {
       element?.removeEventListener("keydown", _action)
     }
-  }, [])
+  }, [setValue])
 
   function onChange(event: React.FormEvent<HTMLTextAreaElement>) {
     setValue(event.currentTarget.value)
@@ -99,6 +105,16 @@ const Home: NextPage = () => {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const state = query.state as string
+
+  return {
+    props: {
+      state: state ?? null
+    }
+  }
 }
 
 export default Home
