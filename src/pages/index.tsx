@@ -64,11 +64,11 @@ const Home: NextPage = () => {
         <meta property="og:image" content="/preview.jpg" />
         <link rel="icon" href="/directory-tree.ico" />
       </Head>
-      <div className="flex flex-col w-full h-full justify-center items-center gap-4">
-        <div className="flex h-1/2 w-1/2 shadow-xl text-lg">
+      <div className="flex flex-col h-full justify-center items-center gap-4 p-4">
+        <div className="flex flex-col md:flex-row w-full h-full shadow-xl text-lg">
           <label className="sr-only" htmlFor="directory">Directory</label>
           <textarea
-          spellCheck={false}
+            spellCheck={false}
             id="directory"
             className="font-mono flex-1 bg-gray-800 rounded-xl text-white p-8 resize-none relative"
             onChange={onChange}
@@ -76,9 +76,9 @@ const Home: NextPage = () => {
             ref={ref}
             value={value}
           ></textarea>
-          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -ml-4 rounded-xl overflow-auto">{preview}</pre>
+          <pre className="flex-1 text-white py-8 pl-12 pr-8 bg-gray-900 -mt-4 md:mt-0 md:-ml-4 rounded-xl overflow-auto">{preview}</pre>
         </div>
-        <div className="w-1/2 bg-gray-800 rounded-xl shadow-xl flex items-center p-1 justify-between">
+        <div className="max-w-xl w-full bg-gray-800 rounded-xl shadow-xl flex items-center p-1 justify-between">
           <label className="text-white ml-2">
             Tab size
             <input type="number" onChange={event => setTabSize(Number(event.currentTarget.value))} defaultValue={tabSize} className="ml-2 bg-gray-700 p-1 rounded-lg w-16" />
