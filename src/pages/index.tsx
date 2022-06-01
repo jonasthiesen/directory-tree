@@ -64,7 +64,7 @@ const Home: NextPage = () => {
         <meta property="og:image" content="/preview.jpg" />
         <link rel="icon" href="/directory-tree.ico" />
       </Head>
-      <div className="flex flex-col h-full justify-center items-center gap-4 p-4">
+      <div className="flex flex-col h-[100dvh] justify-center items-center gap-4 p-4">
         <div className="flex flex-col md:flex-row w-full h-full shadow-xl text-lg">
           <label className="sr-only" htmlFor="directory">Directory</label>
           <textarea
