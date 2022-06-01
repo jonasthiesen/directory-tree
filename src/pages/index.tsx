@@ -2,7 +2,7 @@ import * as React from "react"
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import Head from "next/head"
 import { toAscii } from "../libs/directory"
-import { FaClipboard, FaClipboardCheck } from "react-icons/fa"
+import { FaCheckCircle, FaClipboard, FaClipboardCheck, FaShare, FaShareAlt, FaShareAltSquare, FaShareSquare } from "react-icons/fa"
 import { Tooltip } from "../components/tooltip"
 import cx from "../libs/cx"
 
@@ -11,6 +11,7 @@ const Home: NextPage = ({ state }: InferGetServerSidePropsType<typeof getServerS
   const [value, setValue] = React.useState(state ?? "src/\n\tpages/\n\t\tapi/\n\t\t\tindex.ts\n\t\t_app.tsx\n\t\tindex.tsx\n\tutils/\n\t\tstring.test.ts\n\t\tstring.ts\n.eslintrc.json\n.prettierrc\nnext.config.json\npackage.json")
   const [tabSize, setTabSize] = React.useState<number>(2)
   const [copySuccess, setCopySuccess] = React.useState(false)
+  const [shareSuccess, setShareSuccess] = React.useState(false)
 
   const preview = toAscii(value)
 
@@ -62,6 +63,15 @@ const Home: NextPage = ({ state }: InferGetServerSidePropsType<typeof getServerS
     })
   }
 
+  function copyShareLink() {
+    navigator.clipboard.writeText(window.location.toString()).then(() => {
+      setShareSuccess(true)
+      setTimeout(() => {
+        setShareSuccess(false)
+      }, 2000)
+    })
+  }
+
   return (
     <div className="h-screen w-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <Head>
@@ -89,6 +99,19 @@ const Home: NextPage = ({ state }: InferGetServerSidePropsType<typeof getServerS
             Tab size
             <input type="number" onChange={event => setTabSize(Number(event.currentTarget.value))} defaultValue={tabSize} className="ml-2 bg-gray-700 p-1 rounded-lg w-16" />
           </label>
+          <div className="flex gap-2">
+          <Tooltip label="Share URL" placement="top">
+            <button
+              className={cx(
+                "text-white bg-gray-800 hover:bg-gray-900 p-3 rounded-xl",
+                [shareSuccess, "text-green-500", "text-white"]
+              )}
+              onClick={copyShareLink}
+            >
+              {shareSuccess ? <FaCheckCircle /> : <FaShare />}
+              <span className="sr-only">Share URL</span>
+            </button>
+          </Tooltip>
           <Tooltip label="Copy to clipboard" placement="top">
             <button
               className={cx(
@@ -101,6 +124,7 @@ const Home: NextPage = ({ state }: InferGetServerSidePropsType<typeof getServerS
               <span className="sr-only">Copy to clipboard</span>
             </button>
           </Tooltip>
+          </div>
         </div>
       </div>
     </div>
